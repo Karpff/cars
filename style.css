@@ -1,0 +1,119 @@
+body
+{
+	background: black;
+}
+
+#field
+{
+	width: 800px;
+	height: 600px;
+	margin: auto;
+	margin-top: 100px;
+	border: 2px solid white;
+}
+
+#car
+{
+	width: 12px;
+	height: 20px;
+	border-radius: 2px;
+	margin: auto;
+	position: relative;
+	padding: 1px;
+	background-image: url("car1.png");
+	background-size: 14px 22px;
+}
+
+.both
+{
+	clear: both;
+	height: 17px;
+}
+
+#FLL
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 5px;
+	background: white;
+	float: left;
+	box-shadow: 0 -5px 25px 2px #BBBBBB;
+}
+
+#FRL
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 5px;
+	background: white;
+	float: right;
+	box-shadow: 0 -5px 25px 2px #BBBBBB;
+}
+
+#BLL
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 1px;
+	background: #660000;
+	float: left;
+}
+
+#car2
+{
+	width: 12px;
+	height: 20px;
+	border-radius: 2px;
+	margin: auto;
+	position: relative;
+	padding: 1px;
+	background-image: url("car3.png");
+	background-size: 14px 22px;
+}
+
+#BRL
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 1px;
+	background: #660000;
+	float: right;
+}
+
+#FLL2
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 5px;
+	background: white;
+	float: left;
+	box-shadow: 0 -5px 25px 2px #BBBBBB;
+}
+
+#FRL2
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 5px;
+	background: white;
+	float: right;
+	box-shadow: 0 -5px 25px 2px #BBBBBB;
+}
+
+#BLL2
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 1px;
+	background: #660000;
+	float: left;
+}
+
+#BRL2
+{
+	width: 3px;
+	height: 2px;
+	border-radius: 1px;
+	background: #660000;
+	float: right;
+}

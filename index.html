@@ -1,0 +1,458 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Samochodziki</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<script type="text/javascript" src="../../views.js"></script>
+<script>
+
+var tilt = 0;
+var throttle = 0;
+var turnL = 0;
+var turnR = 0;
+var brake = 0;
+var boost = 0;
+var speedB = 0;
+var speedL = 0;
+var tiltA = 0;
+var posB = -320;
+var posL = 50;
+var brake_delay = 10;
+var hitstun = 0;
+var style = 1;
+
+var tilt2 = 0;
+var throttle2 = 0;
+var turnL2 = 0;
+var turnR2 = 0;
+var brake2 = 0;
+var boost2 = 0;
+var speedB2 = 0;
+var speedL2 = 0;
+var tilt2A = 0;
+var posB2 = -300;
+var posL2 = -50;
+var brake_delay2 = 10;
+var hitstun2 = 0;
+var style2 = 1;
+
+function tick()
+{	
+	if(hitstun == 0)
+	{
+		if((posB < -580 && speedB < -0.01) || (posB > 3 && speedB > 0.01))
+		{
+			speedB = -0.2*speedB;
+			speedL = 0.2*speedL;
+			hitstun = 30;
+			if(tilt < 90)
+			{
+				tilt = tilt + 2 *(90 - tilt);
+			}
+			else if(tilt < 180)
+			{
+				tilt = tilt - 2 *(tilt - 90);
+			}
+			else if(tilt < 270)
+			{
+				tilt = tilt + 2 * (270 - tilt);
+			}
+			else
+			{
+				tilt = tilt - 2 *(tilt - 270);
+			}
+			
+		}
+		if((posL > 400 && speedL > 0.01) || (posL < -400 && speedL < -0.01))
+		{
+			speedB = 0.2*speedB;
+			speedL = -0.2*speedL;
+			hitstun = 30;
+			if(tilt < 90)
+			{
+				tilt = tilt - 2 * tilt;
+			}
+			else if(tilt < 180)
+			{
+				tilt = tilt + 2 *(180 - tilt);
+			}
+			else if(tilt < 270)
+			{
+				tilt = tilt - 2 * (tilt - 180);
+			}
+			else
+			{
+				tilt = tilt + 2 *(360 - tilt);
+			}
+		}
+		document.getElementById("car").style.transform = "rotate("+tilt+"deg)";
+	}
+	if(hitstun > 0)
+	{
+		hitstun--;
+		if(hitstun == 0)
+		{
+			boost = 0;
+		}
+	}
+	else
+	{
+		boost += throttle;
+		tilt = tilt + turnL + turnR;
+		if(tilt > 359)
+		{
+			tilt = tilt - 360;
+		}
+		if(tilt < 0)
+		{
+			tilt = 360 + tilt;
+		}
+		document.getElementById("car").style.transform = "rotate("+tilt+"deg)";
+		if(tilt < 91)
+		{
+			tiltA = tilt;
+			speedB = boost - (tiltA / 90) * boost;
+			speedL = boost - speedB;
+		}
+		else if(tilt < 181)
+		{
+			tiltA = tilt - 90;
+			speedB = ((90-tiltA) / 90) * boost - boost;
+			speedL = boost + speedB;
+		}
+		else if(tilt < 271)
+		{
+			tiltA = tilt - 180;
+			speedB = (tiltA / 90) * boost - boost;
+			speedL = -boost - speedB;
+		}
+		else
+		{
+			tiltA = tilt - 270;
+			speedB = boost - ((90-tiltA) / 90) * boost;
+			speedL = -boost + speedB;
+		}
+		if(boost > 0){boost = boost * 0.995 - 0.1;}
+		if(boost > 0 && (turnL == -3 || turnR == 3)){boost = boost * 0.99 - 0.01;}
+		if(brake == 5){boost = boost * 0.95 - 0.2}
+		if(boost < 0 && brake == 5)
+		{
+			if(brake_delay > 0)
+			{
+				boost = 0.00000001;
+				brake_delay--;
+			}
+			else
+			{
+				document.getElementById("BLL").style.background = "#AAAAAA";
+				document.getElementById("BRL").style.background = "#AAAAAA";
+				document.getElementById("BLL").style.boxShadow = "0 0 10px 2px #888888";
+				document.getElementById("BRL").style.boxShadow = "0 0 10px 2px #888888";
+			}
+		}
+		else if(boost > 0 && brake == 5)
+		{
+			document.getElementById("BLL").style.background = "red";
+			document.getElementById("BRL").style.background = "red";
+			document.getElementById("BLL").style.boxShadow = "0 0 15px 2px #AA0000";
+			document.getElementById("BRL").style.boxShadow = "0 0 15px 2px #AA0000";
+		}
+		else if(boost < 0 && brake != 5)
+		{
+			document.getElementById("BLL").style.background = "#660000";
+			document.getElementById("BRL").style.background = "#660000";
+			document.getElementById("BLL").style.boxShadow = "none";
+			document.getElementById("BRL").style.boxShadow = "none";
+			boost = boost * 0.9 + 0.2;
+			if(boost > 0 && boost < 0.3)
+			{
+				boost = 0;
+			}
+		}
+	}
+	posB += speedB;
+	posL += speedL;
+	document.getElementById("car").style.bottom = posB;
+	document.getElementById("car").style.left = posL;
+	
+	if(hitstun2 == 0)
+	{
+		if((posB2 < -560 && speedB2 < -0.01) || (posB2 > 23 && speedB2 > 0.01))
+		{
+			speedB2 = -0.2*speedB2;
+			speedL2 = 0.2*speedL2;
+			hitstun2 = 30;
+			if(tilt2 < 90)
+			{
+				tilt2 = tilt2 + 2 *(90 - tilt2);
+			}
+			else if(tilt2 < 180)
+			{
+				tilt2 = tilt2 - 2 *(tilt2 - 90);
+			}
+			else if(tilt2 < 270)
+			{
+				tilt2 = tilt2 + 2 * (270 - tilt2);
+			}
+			else
+			{
+				tilt2 = tilt2 - 2 *(tilt2 - 270);
+			}
+			
+		}
+		if((posL2 > 400 && speedL2 > 0.01) || (posL2 < -400 && speedL2 < -0.01))
+		{
+			speedB2 = 0.2*speedB2;
+			speedL2 = -0.2*speedL2;
+			hitstun2 = 30;
+			if(tilt2 < 90)
+			{
+				tilt2 = tilt2 - 2 * tilt2;
+			}
+			else if(tilt2 < 180)
+			{
+				tilt2 = tilt2 + 2 *(180 - tilt2);
+			}
+			else if(tilt2 < 270)
+			{
+				tilt2 = tilt2 - 2 * (tilt2 - 180);
+			}
+			else
+			{
+				tilt2 = tilt2 + 2 *(360 - tilt2);
+			}
+		}
+		document.getElementById("car2").style.transform = "rotate("+tilt2+"deg)";
+	}
+	if(hitstun2 > 0)
+	{
+		hitstun2--;
+		if(hitstun2 == 0)
+		{
+			boost2 = 0;
+		}
+	}
+	else
+	{
+		boost2 += throttle2;
+		tilt2 = tilt2 + turnL2 + turnR2;
+		if(tilt2 > 359)
+		{
+			tilt2 = tilt2 - 360;
+		}
+		if(tilt2 < 0)
+		{
+			tilt2 = 360 + tilt2;
+		}
+		document.getElementById("car2").style.transform = "rotate("+tilt2+"deg)";
+		if(tilt2 < 91)
+		{
+			tilt2A = tilt2;
+			speedB2 = boost2 - (tilt2A / 90) * boost2;
+			speedL2 = boost2 - speedB2;
+		}
+		else if(tilt2 < 181)
+		{
+			tilt2A = tilt2 - 90;
+			speedB2 = ((90-tilt2A) / 90) * boost2 - boost2;
+			speedL2 = boost2 + speedB2;
+		}
+		else if(tilt2 < 271)
+		{
+			tilt2A = tilt2 - 180;
+			speedB2 = (tilt2A / 90) * boost2 - boost2;
+			speedL2 = -boost2 - speedB2;
+		}
+		else
+		{
+			tilt2A = tilt2 - 270;
+			speedB2 = boost2 - ((90-tilt2A) / 90) * boost2;
+			speedL2 = -boost2 + speedB2;
+		}
+		if(boost2 > 0){boost2 = boost2 * 0.995 - 0.1;}
+		if(boost2 > 0 && (turnL2 == -3 || turnR2 == 3)){boost2 = boost2 * 0.99 - 0.01;}
+		if(brake2 == 5){boost2 = boost2 * 0.95 - 0.2}
+		if(boost2 < 0 && brake2 == 5)
+		{
+			if(brake_delay2 > 0)
+			{
+				boost2 = 0.00000001;
+				brake_delay2--;
+			}
+			else
+			{
+				document.getElementById("BLL2").style.background = "#AAAAAA";
+				document.getElementById("BRL2").style.background = "#AAAAAA";
+				document.getElementById("BLL2").style.boxShadow = "0 0 10px 2px #888888";
+				document.getElementById("BRL2").style.boxShadow = "0 0 10px 2px #888888";
+			}
+		}
+		else if(boost2 > 0 && brake2 == 5)
+		{
+			document.getElementById("BLL2").style.background = "red";
+			document.getElementById("BRL2").style.background = "red";
+			document.getElementById("BLL2").style.boxShadow = "0 0 15px 2px #AA0000";
+			document.getElementById("BRL2").style.boxShadow = "0 0 15px 2px #AA0000";
+		}
+		else if(boost2 < 0 && brake2 != 5)
+		{
+			document.getElementById("BLL2").style.background = "#660000";
+			document.getElementById("BRL2").style.background = "#660000";
+			document.getElementById("BLL2").style.boxShadow = "none";
+			document.getElementById("BRL2").style.boxShadow = "none";
+			boost2 = boost2 * 0.9 + 0.2;
+			if(boost2 > 0 && boost2 < 0.3)
+			{
+				boost2 = 0;
+			}
+		}
+	}
+	posB2 += speedB2;
+	posL2 += speedL2;
+	document.getElementById("car2").style.bottom = posB2;
+	document.getElementById("car2").style.left = posL2;
+	var timer1 = setTimeout(tick, 30);
+}
+
+document.onkeydown = function press(e)
+{
+	e = e || window.event;
+	if(e.keyCode == "38")
+	{
+		throttle = 0.4;
+		brake_delay = 10;
+	}
+	if(e.keyCode == "37")
+	{
+		turnL = -4;
+	}
+	if(e.keyCode == "39")
+	{
+		turnR = 4;
+	}
+	if(e.keyCode == "40")
+	{
+		brake = 5;
+	}
+	if(e.keyCode == "87")
+	{
+		throttle2 = 0.4;
+		brake_delay2 = 10;
+	}
+	if(e.keyCode == "65")
+	{
+		turnL2 = -4;
+	}
+	if(e.keyCode == "68")
+	{
+		turnR2 = 4;
+	}
+	if(e.keyCode == "83")
+	{
+		brake2 = 5;
+	}
+}
+
+
+document.onkeyup = function release(e)
+{
+	e = e || window.event;
+	if(e.keyCode == "38")
+	{
+		throttle = 0;
+	}
+	if(e.keyCode == "37")
+	{
+		turnL = 0;
+	}
+	if(e.keyCode == "39")
+	{
+		turnR = 0;
+	}
+	if(e.keyCode == "40")
+	{
+		brake = 0;
+		document.getElementById("BLL").style.background = "#660000";
+		document.getElementById("BRL").style.background = "#660000";
+		document.getElementById("BLL").style.boxShadow = "none";
+		document.getElementById("BRL").style.boxShadow = "none";
+	}
+	if(e.keyCode == "87")
+	{
+		throttle2 = 0;
+	}
+	if(e.keyCode == "65")
+	{
+		turnL2 = 0;
+	}
+	if(e.keyCode == "68")
+	{
+		turnR2 = 0;
+	}
+	if(e.keyCode == "83")
+	{
+		brake2 = 0;
+		document.getElementById("BLL2").style.background = "#660000";
+		document.getElementById("BRL2").style.background = "#660000";
+		document.getElementById("BLL2").style.boxShadow = "none";
+		document.getElementById("BRL2").style.boxShadow = "none";
+	}
+}
+
+function changeStyle()
+{
+	if(style < 4)
+	{
+		style++;
+	}
+	else
+	{
+		style = 1;
+	}
+	document.getElementById("car").style.backgroundImage = "url(\"car"+style+".png\")";
+	if(style == 4)
+	{
+		document.getElementById("car").style.backgroundSize = "16px 22px";
+		document.getElementById("car").style.backgroundPosition = "-1px 0";
+	}
+}
+
+function changeStyle2()
+{
+	if(style2 < 4)
+	{
+		style2++;
+	}
+	else
+	{
+		style2 = 1;
+	}
+	document.getElementById("car2").style.backgroundImage = "url(\"car"+style2+".png\")";
+	if(style2 == 4)
+	{
+		document.getElementById("car2").style.backgroundSize = "16px 22px";
+		document.getElementById("car2").style.backgroundPosition = "-1px 0";
+	}
+}
+
+</script>
+</head>
+<body onload="tick()">
+<div id="field">
+<div id="car" onclick="changeStyle()">
+	<div id="FLL"></div>
+	<div id="FRL"></div>
+	<div class="both"></div>
+	<div id="BLL"></div>
+	<div id="BRL"></div>
+</div>
+<div id="car2" onclick="changeStyle2()">
+	<div id="FLL2"></div>
+	<div id="FRL2"></div>
+	<div class="both"></div>
+	<div id="BLL2"></div>
+	<div id="BRL2"></div>
+</div>
+</div>
+</body>
+</html>
